@@ -1,0 +1,5 @@
+<p>Databinding Excersize</p>
+<input type="text" [(ngModel)]="username">
+<p>{{username}}</p>
+<button [disabled] = "isValidUsername()" (click)="resetUsername()">reset</button>
+<button [disabled] = "username === ''" (click)="username=''">reset</button>

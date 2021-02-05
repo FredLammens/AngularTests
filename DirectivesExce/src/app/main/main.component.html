@@ -1,0 +1,4 @@
+<p>main works!</p>
+<button (click) = "togleDisplay()">Display Details</button>
+<p *ngIf="display">Secret password = tuna</p>
+<div [ngClass]="{fifth: clicks.length >= 5}" [ngStyle]="{backgroundColor:getStyle()}" *ngFor="let click of clicks">{{click}}</div>

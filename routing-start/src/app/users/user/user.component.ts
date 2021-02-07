@@ -21,7 +21,7 @@ export class UserComponent implements OnInit, OnDestroy {
     //for later changes
     this.paramsSubscription = this.route.params.subscribe(// is observable => async code
       (params: Params) => {
-        this.user.id = params['id'];
+        this.user.id = +params['id'];
         this.user.name = params['name'];
       }
     );

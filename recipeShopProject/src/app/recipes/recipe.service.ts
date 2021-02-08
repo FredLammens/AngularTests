@@ -18,10 +18,13 @@ export class RecipeService{
              new Ingredient("salad",1)
         ])
     ];
-      getRecipes(){
+    getRecipes(){
           return this.recipes.slice(); //returns new array that is copy of 
     }
     addIngredientToShoppingList(ingredients: Ingredient[]){
         this.slService.addIngredients(ingredients);
     }
+    getRecipe(id:number){
+        return this.recipes[id];
     }
+}

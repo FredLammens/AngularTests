@@ -17,7 +17,6 @@ export class RecipeEditComponent implements OnInit {
       (params: Params) => {
         this.id = +params['id'];
         this.editMode = params['id'] != null; //if params has id returns true else false
-        
       }
     );
   }

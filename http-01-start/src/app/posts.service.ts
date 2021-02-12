@@ -32,7 +32,7 @@ export class PostsService{
     }
     fetchPosts(){
         return this.http.get<{[key: string]: Post}>(dbUrl)
-        .pipe(map(responseData => { //convert POJO to array of obejct
+        .pipe(map(responseData => { //convert POJO to array of object
           const postsArray:Post[] = [];
           for(const key in responseData) {
             if(responseData.hasOwnProperty(key))

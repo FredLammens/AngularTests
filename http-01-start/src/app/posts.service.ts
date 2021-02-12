@@ -4,7 +4,7 @@ import { Subject, throwError } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 import { Post } from "./post.model";
 
-const dbUrl = ;
+const dbUrl = '';
 @Injectable({providedIn: 'root'})
 export class PostsService{
     error = new Subject<string>();

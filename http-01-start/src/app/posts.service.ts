@@ -4,7 +4,7 @@ import { Subject, throwError } from "rxjs";
 import { map, catchError, tap } from "rxjs/operators";
 import { Post } from "./post.model";
 
-const dbUrl = '';
+const dbUrl = 'https://shoppinglist-4ae47-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
 @Injectable({providedIn: 'root'})
 export class PostsService{
     error = new Subject<string>();

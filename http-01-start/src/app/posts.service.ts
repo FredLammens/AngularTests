@@ -1,10 +1,10 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, throwError } from "rxjs";
-import { map, catchError } from "rxjs/operators";
+import { map, catchError, tap } from "rxjs/operators";
 import { Post } from "./post.model";
 
-const dbUrl = 'https://shoppinglist-4ae47-default-rtdb.europe-west1.firebasedatabase.app/posts.json';
+const dbUrl = ;
 @Injectable({providedIn: 'root'})
 export class PostsService{
     error = new Subject<string>();
@@ -20,7 +20,8 @@ export class PostsService{
             postData, 
             {
                 headers: new HttpHeaders({"Custom-Header": 'Hello'}),
-                params: searchParams
+                params: searchParams,
+                observe: 'response'
         }).subscribe(
       responseData => {
         console.log(responseData);
@@ -45,6 +46,15 @@ export class PostsService{
         }));
     }
     deletePosts() {
-       return this.http.delete(dbUrl);
+       return this.http.delete(dbUrl, {
+         observe: 'events',
+         responseType: 'text'
+        }).pipe(tap(event => {
+         console.log(event);
+         if(event.type === HttpEventType.Sent)
+         console.log("request sent"); //mostly used to update ui
+         if(event.type === HttpEventType.Response)
+         console.log(event.body);
+       }));
     }
 }

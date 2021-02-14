@@ -16,6 +16,7 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { ReactiveFormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { AuthComponent } from './auth/auth.component';
+import { LoadingSpinnerComponent } from './shared/loadingSpinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AuthComponent } from './auth/auth.component';
     NotFoundComponent,
     RecipeSelectComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

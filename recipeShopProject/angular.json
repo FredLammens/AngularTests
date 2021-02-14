@@ -30,6 +30,14 @@
             "scripts": [              "./node_modules/jquery/dist/jquery.js",              "./node_modules/bootstrap/dist/js/bootstrap.js"            ]
           },
           "configurations": {
+            "dev":  {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -67,6 +75,9 @@
           "configurations": {
             "production": {
               "browserTarget": "recipeShopProject:build:production"
+            },
+            "dev": {
+              "browserTarget": "recipeShopProject:build:dev"
             }
           }
         },

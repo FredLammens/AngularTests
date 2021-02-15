@@ -10,13 +10,17 @@ import { User } from "./user.model";
 @Injectable({providedIn: 'root'})
 export class AuthService {
     user = new BehaviorSubject<User>(null); // difference between normal subject = also gives subscribers acces to previous data
-
+    private tokenExpirationTimer : any ;
     constructor(private http: HttpClient, private router: Router) {}
 
     logout(){
         this.user.next(null);
         //can be used in multiple components 
         this.router.navigate(['/auth']);
+        localStorage.removeItem('userData');
+        if(!this.tokenExpirationTimer)
+        clearTimeout(this.tokenExpirationTimer);
+        this.tokenExpirationTimer = null;
     }
 
     signUp(email: string, password: string){
@@ -51,13 +55,21 @@ export class AuthService {
 
         if(loadedUser.token){ //only if valid 
             this.user.next(loadedUser);
+            const expirationDuration = new Date(userData._tokenExpirationDate).getTime() -  new Date().getTime();
+            this.autoLogout(expirationDuration);
         }
+    }
+    autoLogout(expirationDuration: number){ //milliseconds
+        this.tokenExpirationTimer = setTimeout(() => {
+            this.logout();
+        },expirationDuration)
     }
 
     private handleAuthentification(email:string,userId:string,token:string,expiresIn: number){
         const expirationDate = new Date(new Date().getTime() + expiresIn * 1000); // seconds to milliseconds
         const user = new User(email, userId, token, expirationDate);
         this.user.next(user);
+        this.autoLogout(expiresIn * 1000);
         localStorage.setItem('userData', JSON.stringify(user)); //TODO:encrypt
     }
 

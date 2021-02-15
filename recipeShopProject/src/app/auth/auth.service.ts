@@ -1,5 +1,6 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
@@ -10,7 +11,13 @@ import { User } from "./user.model";
 export class AuthService {
     user = new BehaviorSubject<User>(null); // difference between normal subject = also gives subscribers acces to previous data
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private router: Router) {}
+
+    logout(){
+        this.user.next(null);
+        //can be used in multiple components 
+        this.router.navigate(['/auth']);
+    }
 
     signUp(email: string, password: string){
         return this.http.post<AuthResponseData>("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + environment.apiKey, {

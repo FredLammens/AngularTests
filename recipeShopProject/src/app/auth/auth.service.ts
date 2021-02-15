@@ -1,27 +1,42 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { Subject, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
+import { User } from "./user.model";
 
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
+    user = new Subject<User>();
+
     constructor(private http: HttpClient) {}
+
     signUp(email: string, password: string){
         return this.http.post<AuthResponseData>("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + environment.apiKey, {
             email: email,
             password: password,
             returnSecureToken: true
-        }).pipe(catchError(this.handleError));
+        }).pipe(catchError(this.handleError), tap(resData => {
+           this.handleAuthentification(resData.email,resData.localId,resData.idToken,+resData.expiresIn);
+        }));
     }
     signIn(email: string, password: string){
         return this.http.post<AuthResponseData>("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + environment.apiKey,{
             email: email,
             password: password,
             returnSecureToken: true
-        }).pipe(catchError(this.handleError));
+        }).pipe(catchError(this.handleError), tap(resData => {
+            this.handleAuthentification(resData.email,resData.localId,resData.idToken,+resData.expiresIn);
+         }));
     }
+
+    private handleAuthentification(email:string,userId:string,token:string,expiresIn: number){
+        const expirationDate = new Date(new Date().getTime() + expiresIn * 1000); // seconds to milliseconds
+        const user = new User(email, userId, token, expirationDate);
+        this.user.next(user);
+    }
+
     private handleError(errorRes: HttpErrorResponse){
         let errorMessage = "An unknown error occured"
         if(!errorRes.error || !errorRes.error.error){

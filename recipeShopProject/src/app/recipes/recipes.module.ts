@@ -21,6 +21,4 @@ import { RecipesComponent } from "./recipes.component";
     ],
     imports: [RouterModule, CommonModule ,ReactiveFormsModule, RecipesRoutingModule], //services doesnt need to be important all others do. => Commonmodule = for ngif etc.
 })
-export class RecipesModule {
-
-}
+export class RecipesModule {}
